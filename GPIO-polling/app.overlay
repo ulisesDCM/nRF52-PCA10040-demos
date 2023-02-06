@@ -2,22 +2,22 @@
     buttons {
         compatible = "gpio-keys";
         button0: button_0 {
-            gpios = < &gpio0 13 GPIO_PULL_UP>;
+            gpios = < &gpio0 13 (GPIO_PULL_UP | GPIO_ACTIVE_LOW)>;
             label = "USR_BTN1";
         };
 
         button1: button_1 {
-            gpios = < &gpio0 14 GPIO_PULL_UP >;
+            gpios = < &gpio0 14 (GPIO_PULL_UP | GPIO_ACTIVE_LOW)>;
             label = "USR_BTN2";    
         };
 
         button2: button_2 {
-            gpios = < &gpio0 15 GPIO_PULL_UP >;
+            gpios = < &gpio0 15 (GPIO_PULL_UP | GPIO_ACTIVE_LOW) >;
             label = "USR_BTN3";
         };
 
         button3: button_3 {
-            gpios = < &gpio0 16 GPIO_PULL_UP >;
+            gpios = < &gpio0 16 (GPIO_PULL_UP | GPIO_ACTIVE_LOW) >;
             label = "USR_BTN4";
         };
     };
