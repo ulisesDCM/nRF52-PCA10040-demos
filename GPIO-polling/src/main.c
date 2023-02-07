@@ -33,8 +33,84 @@ static const struct gpio_dt_spec usr_led2 = GPIO_DT_SPEC_GET(LED1_NODE, gpios);
 static const struct gpio_dt_spec usr_led3 = GPIO_DT_SPEC_GET(LED2_NODE, gpios);
 static const struct gpio_dt_spec usr_led4 = GPIO_DT_SPEC_GET(LED3_NODE, gpios);
 
+static void system_error(void);
+static int system_init(void);
 
 void main(void)
 {
+	int system_status = 0;
+	
+	/* Initialize system */
+	system_status = system_init();
+
+	if(!system_status)
+		system_error();
+
+
+	/* Main while loop */
+	while(1)
+	{	
+		k_msleep(1000);
+	}
+}
+
+static void system_error(void)
+{
+	while(1);
+}
+
+static int system_init(void)
+{
+	/* Check buttons ports */
+	if(!device_is_ready(usr_btn1.port))
+		return false;
+
+	if(!device_is_ready(usr_btn2.port))
+		return false;
+
+	if(!device_is_ready(usr_btn3.port))
+		return false;
+
+	if(!device_is_ready(usr_btn4.port))
+		return false;
+
+	/* Check LEDs ports */
+	if(!device_is_ready(usr_led1.port))
+		return false;
+
+	if(!device_is_ready(usr_led2.port))
+		return false;
+
+	if(!device_is_ready(usr_led3.port))
+		return false;
+
+	if(!device_is_ready(usr_led4.port))
+		return false;
+
+	/* Configure the buttons */
+	if( gpio_pin_configure_dt(&usr_btn1, GPIO_INPUT) != 0)
+		return false;
+
+	if( gpio_pin_configure_dt(&usr_btn2, GPIO_INPUT) != 0)
+		return false;
+
+	if( gpio_pin_configure_dt(&usr_btn3, GPIO_INPUT) != 0)
+		return false;
+
+	if( gpio_pin_configure_dt(&usr_btn4, GPIO_INPUT) != 0)
+		return false;
+
+	/* Configure the LEDs */
+	if( gpio_pin_configure_dt(&usr_led1, GPIO_OUTPUT) != 0)
+		return false;
+
+	if( gpio_pin_configure_dt(&usr_led2, GPIO_OUTPUT) != 0)
+		return false;
+
+	if( gpio_pin_configure_dt(&usr_led3, GPIO_OUTPUT) != 0)
+		return false;
+
+	if( gpio_pin_configure_dt(&usr_led4, GPIO_OUTPUT) != 0)
+		return false;
 
 }
