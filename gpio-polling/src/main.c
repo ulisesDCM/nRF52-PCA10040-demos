@@ -40,7 +40,8 @@ static int leds_init(void)
         }
 
         // Configure as output.
-        gpio_pin_configure_dt((const struct gpio_dt_spec *) &usr_leds[i], GPIO_OUTPUT);
+        gpio_pin_configure_dt((const struct gpio_dt_spec *) &usr_leds[i], 
+                                (GPIO_OUTPUT | GPIO_ACTIVE_LOW));
     }
 
     
