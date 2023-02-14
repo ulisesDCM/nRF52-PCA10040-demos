@@ -79,12 +79,21 @@ int main(void)
 
     while(1)
     {
+        // Uncomment this code to toogle all LED's.        
+        // for(uint8_t i=0; i<PCA100_BOARD_LEDS; i++)
+        // {
+        //     LOG_INF("Toogling the LED %d.",i);
+        //     gpio_pin_toggle_dt( (const struct gpio_dt_spec *) &usr_leds[i]);
+        //     k_msleep(100);
+        // }
+
+        // Uncomment this code to control the LED state using the buttons.
+        // LED1->BTN1 / LED2->BTN2 / LED3->BTN3 / LED4->BTN4.
         for(uint8_t i=0; i<PCA100_BOARD_LEDS; i++)
         {
-            LOG_INF("Toogling the LED %d.",i);
-            gpio_pin_toggle_dt( (const struct gpio_dt_spec *) &usr_leds[i]);
-            k_msleep(1000);
-        }    
+            gpio_pin_set_dt(&usr_leds[i], gpio_pin_get_dt(&usr_buttons[i]));
+        }
+
     }
     return 1;
 }
