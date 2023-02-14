@@ -4,4 +4,6 @@ Author: Ulises
 # About:
 
 # Project list:
+- logging
+- minimal
  
