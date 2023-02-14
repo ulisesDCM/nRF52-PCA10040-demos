@@ -64,7 +64,7 @@ void logFactorial(void)
         {
             factorial = factorial*j;
         }
-        LOG_INF("The factorial of %2d = %d\n",i,factorial);
+        LOG_INF("The factorial of %2d = %d",i,factorial);
     }
 
 }
