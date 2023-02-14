@@ -1,2 +1,64 @@
 // For more help, browse the DeviceTree documentation at https://docs.zephyrproject.org/latest/guides/dts/index.html
 // You can also visit the nRF DeviceTree extension documentation at https://nrfconnect.github.io/vscode-nrf-connect/devicetree/nrfdevicetree.html
+/{
+    inputs{
+        compatible = "gpio-keys";
+        btn1:btn1{
+            gpios = < &gpio0 13 GPIO_ACTIVE_LOW >;
+            label = "BUTTON1";
+        };  
+
+        btn2:btn2{
+            gpios = < &gpio0 14 GPIO_ACTIVE_LOW >;
+            label = "BUTTON2";
+        };  
+
+        btn3:btn3{
+            gpios = < &gpio0 15 GPIO_ACTIVE_LOW >;
+            label = "BUTTON3";
+        };  
+
+        btn4:btn4{
+            gpios = < &gpio0 16 GPIO_ACTIVE_LOW >;
+            label = "BUTTON4";
+        };  
+    };
+    
+    outputs{
+        compatible = "gpio-leds";
+        ld1:ld1{
+            gpios = < &gpio0 17 GPIO_ACTIVE_LOW >;
+            label = "LED1";
+        };
+
+        ld2:ld2{
+            gpios = < &gpio0 18 GPIO_ACTIVE_LOW >;
+            label = "LED2";
+        };
+
+        ld3:ld3{
+            gpios = < &gpio0 19 GPIO_ACTIVE_LOW >;
+            label = "LED3";
+        };
+
+        ld4:ld4{
+            gpios = < &gpio0 20 GPIO_ACTIVE_LOW >;
+            label = "LED4";
+        };
+    };
+
+    aliases{
+        
+        // User Buttons 
+        usrbtn1 = &btn1;
+        usrbtn2 = &btn2;
+        usrbtn3 = &btn3;
+        usrbtn4 = &btn4;
+
+        // User LEDs
+        usrled1 = &ld1;
+        usrled2 = &ld2;
+        usrled3 = &ld3;
+        usrled4 = &ld4;
+    };
+};
