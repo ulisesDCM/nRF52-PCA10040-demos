@@ -1,0 +1,6 @@
+source "Kconfig.zephyr"
+
+config MYMATH
+    bool "Enable my math"
+    default n
+    

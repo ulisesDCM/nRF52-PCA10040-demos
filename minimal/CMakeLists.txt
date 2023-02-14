@@ -4,3 +4,6 @@ project(minimal)
 target_sources(app PRIVATE src/main.c)
 target_sources(app PRIVATE src/myMath.c)
 
+# addition of the custom files to be conditional
+target_sources_ifdef(CONFIG_MYMATH app PRIVATE src/myMath.c)
+

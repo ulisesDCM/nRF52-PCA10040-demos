@@ -13,7 +13,16 @@ void main(void)
     while(1)
     {
         printk("Hello world!!!\n");
-        printk(" %d + %d = %d\n",a,b, sum(a,b));
-        k_msleep(1000);
+        
+        if(!(IS_ENABLED(CONFIG_MYMATH)))
+        {
+            printk("MYMATH not enabled \n");
+            return;
+        }
+        else
+        {
+            printk(" %d + %d = %d\n",a,b, sum(a,b));
+            k_msleep(1000);
+        }
     }
 }
