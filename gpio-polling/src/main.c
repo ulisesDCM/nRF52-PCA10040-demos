@@ -33,7 +33,7 @@ static int leds_init(void)
     for(uint8_t i=0; i<PCA100_BOARD_LEDS; i++)
     {
         // Wait for ready.
-        if(!device_is_ready( (const struct device *) &usr_leds[i].port))
+        if(!device_is_ready( usr_leds[i].port))
         {
             LOG_ERR("Error in the initialization of the LED %d",i+1);
             return 0;
@@ -53,7 +53,7 @@ static int buttons_init(void)
     for(uint8_t i=0; i<PCA100_BOARD_BTNS; i++)
     {
         // Wait for ready.
-        if(!device_is_ready( (const struct device *) &usr_buttons[i].port))
+        if(!device_is_ready( usr_buttons[i].port))
         {
             LOG_ERR("Error in the initialization of the BUTTON %d",i+1);
             return 0;
@@ -79,9 +79,12 @@ int main(void)
 
     while(1)
     {
-        
-        LOG_INF("Hello world!!!");
-        k_msleep(1000);
+        for(uint8_t i=0; i<PCA100_BOARD_LEDS; i++)
+        {
+            LOG_INF("Toogling the LED %d.",i);
+            gpio_pin_toggle_dt( (const struct gpio_dt_spec *) &usr_leds[i]);
+            k_msleep(1000);
+        }    
     }
     return 1;
 }
