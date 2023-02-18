@@ -34,10 +34,9 @@ static const struct gpio_dt_spec buttonsLit[4] = {
 int main(void)
 {
     
+
     while(1)
     {
-        LOG_INF("Hello world!!!");
-        LOG_ERR("Error ");
         k_msleep(1000);
     }
     return 1;
