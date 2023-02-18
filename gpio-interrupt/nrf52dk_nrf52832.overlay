@@ -1,0 +1,62 @@
+
+/{
+    inputs{
+        compatible = "gpio-keys";
+        btn1:button1{
+            gpios = < &gpio0 13 GPIO_ACTIVE_LOW >;
+            label = "User button 1";
+        };
+
+        btn2:button2{
+            gpios = < &gpio0 14 GPIO_ACTIVE_LOW >;
+            label = "User button 2";
+        };
+
+        btn3:button3{
+            gpios = < &gpio0 15 GPIO_ACTIVE_LOW >;
+            label = "User button 3";
+        };
+
+        btn4:button4{
+            gpios = < &gpio0 16 GPIO_ACTIVE_LOW >;
+            label = "User button 4";
+        };
+    };
+
+    outputs{
+        compatible = "gpio-leds";
+
+        ld1:led1{
+            gpios = < &gpio0 17 GPIO_ACTIVE_LOW >;
+            label = "User LED 1";
+        };
+
+        ld2:led2{
+            gpios = < &gpio0 18 GPIO_ACTIVE_LOW >;
+            label = "User LED 2";
+        };
+
+        ld3:led3{
+            gpios = < &gpio0 19 GPIO_ACTIVE_LOW >;
+            label = "User LED 3";
+        };
+
+        ld4:led4{
+            gpios = < &gpio0 20 GPIO_ACTIVE_LOW >;
+            label = "User LED 4";
+        };
+    };
+
+    aliases {
+        // User LEDs.
+        ld1=&ld1;
+        ld2=&ld2;
+        ld3=&ld3;
+        ld4=&ld4;
+        // User buttons.
+        btn1=&btn1;
+        btn2=&btn2;
+        btn3=&btn3;
+        btn4=&btn4;
+    };
+};
