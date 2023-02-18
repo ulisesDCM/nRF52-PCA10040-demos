@@ -31,9 +31,41 @@ static const struct gpio_dt_spec buttonsLit[4] = {
                 GPIO_DT_SPEC_GET(BTN4_NODE, gpios)
 };
 
+static int init_gpios(void)
+{
+    //Init LEDs
+    LOG_INF("Starting the initialization of the list of LEDs");
+    for(uint8_t i=0; i<4; i++)
+    {
+        if(!device_is_ready(ledList[i].port))
+        {
+            LOG_ERR("Initialization error in the led %d. ",(i+1));
+            return 0;   //Return error.
+        }
+        gpio_pin_configure_dt(&ledList[i], (GPIO_OUTPUT | GPIO_PUSH_PULL));    
+    }
+    LOG_INF("The list of LEDs was initialize correctly.");
+    
+    //Init Buttons.
+    LOG_INF("Starting the initialization of the list of buttons.");
+    for(uint8_t i=0; i<4; i++)
+    {
+        if(!device_is_ready(buttonsLit[i].port))
+        {
+            LOG_ERR("Initialization error in the led %d.",(i+1));
+        }
+        gpio_pin_configure_dt(&buttonsLit[i], (GPIO_INPUT | GPIO_PULL_UP));
+    }  
+
+    LOG_INF("The list of buttons was initialize correctly.");
+
+    return 1;
+}
+
 int main(void)
 {
-    
+    if(!init_gpios())
+        return 0;
 
     while(1)
     {
