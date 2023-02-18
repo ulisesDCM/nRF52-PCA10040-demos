@@ -31,6 +31,17 @@ static const struct gpio_dt_spec buttonsLit[4] = {
                 GPIO_DT_SPEC_GET(BTN4_NODE, gpios)
 };
 
+static struct gpio_callback btn1_cb_data;
+
+void btn1_isr(const struct device *dev, struct gpio_callback *cb, gpio_port_pins_t pins)
+{
+    LOG_INF("Executing button1 isr function.");   
+    for(uint8_t i=0; i<4; i++)
+    {
+        gpio_pin_toggle_dt(&ledList[i]);
+    }
+}
+
 static int init_gpios(void)
 {
     //Init LEDs
@@ -45,7 +56,6 @@ static int init_gpios(void)
         gpio_pin_configure_dt(&ledList[i], (GPIO_OUTPUT | GPIO_PUSH_PULL));    
     }
     LOG_INF("The list of LEDs was initialize correctly.");
-    
     //Init Buttons.
     LOG_INF("Starting the initialization of the list of buttons.");
     for(uint8_t i=0; i<4; i++)
@@ -55,7 +65,17 @@ static int init_gpios(void)
             LOG_ERR("Initialization error in the led %d.",(i+1));
         }
         gpio_pin_configure_dt(&buttonsLit[i], (GPIO_INPUT | GPIO_PULL_UP));
+
+        
+    
     }  
+        //Start interrupt configuration for the buttons.
+        gpio_pin_interrupt_configure_dt(&buttonsLit[0], GPIO_INT_EDGE_FALLING);
+
+        //Defining the callback function.
+        gpio_init_callback(&btn1_cb_data, btn1_isr, BIT(buttonsLit[0].pin));
+
+        gpio_add_callback(buttonsLit[0].port, &btn1_cb_data);
 
     LOG_INF("The list of buttons was initialize correctly.");
 
