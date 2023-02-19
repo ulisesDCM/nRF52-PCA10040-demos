@@ -23,6 +23,14 @@ static void uart_send_data(uint8_t *str)
         uart_poll_out(uart, *str++);
 }
 
+static void uart_get_data(uint8_t *str)
+{
+    do
+    {
+
+    }while(*str);
+}
+
 int main(void)
 {
     if(!device_is_ready(uart))
@@ -38,12 +46,24 @@ int main(void)
         return -ENOSYS;
     }
 
-    unsigned char data[] = "Hello world!!! \r\n";
+    unsigned char data_t[] = "Hello world using UART0 \r\n";     //Data to transmitt.
+    unsigned char data_r[20] = {0};                     //Data to receive.
+
+    LOG_INF("Hello world using RTT");
 
     while(1)
     {
-        uart_send_data(data);  //Transmitt data
-        LOG_INF("Hello world");
+        uart_send_data(data_t);             //Transmitt data
+
+        // while(data_r[0] == 0)
+        //     uart_poll_in(uart, &data_r[0]);
+
+        // if(data_r[0] != 0)
+        // {
+        //     uart_poll_out(uart, data_r[0]);
+        //     data_r[0] = 0;
+        // }
+        
         k_msleep(1000);
     }
     return 1;
