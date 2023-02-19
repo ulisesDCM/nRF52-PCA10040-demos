@@ -17,6 +17,12 @@ const struct uart_config uart0_config = {
     .stop_bits=UART_CFG_STOP_BITS_1
 };
 
+static void uart_send_data(uint8_t *str)
+{
+    while(*str)
+        uart_poll_out(uart, *str++);
+}
+
 int main(void)
 {
     if(!device_is_ready(uart))
@@ -32,11 +38,11 @@ int main(void)
         return -ENOSYS;
     }
 
-    unsigned char data = '1';
+    unsigned char data[] = "Hello world!!! \r\n";
 
     while(1)
     {
-        uart_poll_out(uart, data);  //Transmitt data
+        uart_send_data(data);  //Transmitt data
         LOG_INF("Hello world");
         k_msleep(1000);
     }
