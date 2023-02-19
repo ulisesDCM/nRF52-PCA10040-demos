@@ -18,6 +18,35 @@ const struct uart_config uartConf = {
 };
 
 
+static void uart0_cb(const struct device *dev, 
+                    struct uart_event *evt,
+                    void *user_data)
+{
+    switch (evt->type)
+    {
+    case UART_TX_DONE:
+        break;
+
+    case UART_TX_ABORTED:
+        break;
+
+    case UART_RX_RDY:
+        break;
+    
+    case UART_RX_BUF_REQUEST:
+        break;
+    
+    case UART_RX_BUF_RELEASED:
+        break;
+    
+    case UART_RX_DISABLED:
+        break;
+    
+    case UART_RX_STOPPED:
+        break;
+    }    
+}
+
 int main(void)
 {
     if(!device_is_ready(uart))
@@ -32,10 +61,15 @@ int main(void)
         return 1;
     }
 
-
+    if(uart_callback_set(uart, uart0_cb, NULL) < 0)
+    {
+        LOG_ERR("Error setting the UART0 callback function.");
+        return 1;
+    }
+    
     while(1)
     {
-        LOG_INF("Hello world!!!");
+            LOG_INF("Hello world!!!");
         k_msleep(1000);
     }
     
