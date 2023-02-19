@@ -10,3 +10,68 @@
 
 // For more help, browse the DeviceTree documentation at https://docs.zephyrproject.org/latest/guides/dts/index.html
 // You can also visit the nRF DeviceTree extension documentation at https://nrfconnect.github.io/vscode-nrf-connect/devicetree/nrfdevicetree.html
+/{
+    userleds{
+        compatible = "gpio-leds";
+
+        ld1:ld1{
+            gpios = < &gpio0 17 GPIO_ACTIVE_LOW >;
+            label = "PCA10040 USER LED 1";
+        };
+
+        ld2:ld2{
+            gpios = < &gpio0 18 GPIO_ACTIVE_LOW >;
+            label = "PCA10040 USER LED 2";
+        };
+
+        ld3:ld3{
+            gpios = < &gpio0 19 GPIO_ACTIVE_LOW >;
+            label = "PCA10040 USER LED 3";
+        };
+
+        ld4:ld4{
+            gpios = < &gpio0 20 GPIO_ACTIVE_LOW >;
+            label = "PCA10040 USER LED 4";
+        };
+
+    };
+
+    userbuttons{
+        compatible = "gpio-keys";
+
+        btn1:btn1{
+            gpios = < &gpio0 13 GPIO_ACTIVE_LOW >;
+            label = "PCA10040 USER BUTTON 1";
+        };
+
+        btn2:btn2{
+            gpios = < &gpio0 14 GPIO_ACTIVE_LOW >;
+            label = "PCA10040 USER BUTTON 2";
+        };
+
+        btn3:btn3{
+            gpios = < &gpio0 15 GPIO_ACTIVE_LOW >;
+            label = "PCA10040 USER BUTTON 3";
+        };
+
+        btn4:btn4{
+            gpios = < &gpio0 16 GPIO_ACTIVE_LOW >;
+            label = "PCA10040 USER BUTTON 4";
+        };
+    };
+
+    aliases {
+        // LEDs
+        ld1=&ld1;
+        ld2=&ld2;
+        ld3=&ld3;
+        ld4=&ld4;
+
+        //Buttons
+        btn1=&btn1;
+        btn2=&btn2;
+        btn3=&btn3;
+        btn4=&btn4;
+
+    };
+};
