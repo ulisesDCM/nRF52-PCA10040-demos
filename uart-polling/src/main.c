@@ -2,6 +2,8 @@
 #include "zephyr/kernel.h"
 #include "zephyr/logging/log.h"
 
+#include "zephyr/drivers/uart.h"
+
 // LOG_MODULE_DECLARE(main, LOG_LEVEL_DBG);
 LOG_MODULE_REGISTER(main, LOG_LEVEL_INF);
 
