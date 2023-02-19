@@ -34,6 +34,8 @@ static void uart0_cb(const struct device *dev,
 
     case UART_RX_RDY:
         LOG_INF("UART callback function, UART_RX_RDY");
+        LOG_INF("UART_RX_RDY Data length: %d",evt->data.rx.len);
+        LOG_INF("UART_RX_RDY Data offset: %d",evt->data.rx.offset);
         break;
     
     case UART_RX_BUF_REQUEST:
@@ -74,14 +76,18 @@ int main(void)
         return 1;
     }
 
+    uint8_t uartTxMsg[] = {"Hello world using UART0 Tx terminal \r\n"};
     uint8_t uartRxBuff[10] = {0};
     uint8_t uartTxBuff[10] = {0};
 
     while(1)
     {
         uart_rx_enable(uart, uartRxBuff, 1, SYS_FOREVER_US);
-        LOG_INF("Data received from UART rx port: %d",uartRxBuff[0]);
-        k_msleep(1000);
+        uart_tx(uart, uartRxBuff, 1, SYS_FOREVER_US);
+        uartRxBuff[0] = 0;  
+        // LOG_INF("Data received from UART rx port: %d",uartRxBuff[0]);
+        // uart_tx(uart, uartTxMsg, sizeof(uartTxMsg), SYS_FOREVER_US);
+        // k_msleep(1000);
     }
     
     return 1;
