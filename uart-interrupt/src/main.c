@@ -25,24 +25,31 @@ static void uart0_cb(const struct device *dev,
     switch (evt->type)
     {
     case UART_TX_DONE:
+        LOG_INF("UART callback function, UART_TX_DONE");
         break;
 
     case UART_TX_ABORTED:
+        LOG_INF("UART callback function, UART_TX_ABORTED");
         break;
 
     case UART_RX_RDY:
+        LOG_INF("UART callback function, UART_RX_RDY");
         break;
     
     case UART_RX_BUF_REQUEST:
+        LOG_INF("UART callback function, UART_RX_BUF_REQUEST");
         break;
     
     case UART_RX_BUF_RELEASED:
+        LOG_INF("UART callback function, UART_RX_BUF_RELEASED");
         break;
     
     case UART_RX_DISABLED:
+        LOG_INF("UART callback function, UART_RX_DISABLED");
         break;
     
     case UART_RX_STOPPED:
+        LOG_INF("UART callback function, UART_RX_STOPPED");
         break;
     }    
 }
@@ -66,10 +73,14 @@ int main(void)
         LOG_ERR("Error setting the UART0 callback function.");
         return 1;
     }
-    
+
+    uint8_t uartRxBuff[10] = {0};
+    uint8_t uartTxBuff[10] = {0};
+
     while(1)
     {
-            LOG_INF("Hello world!!!");
+        uart_rx_enable(uart, uartRxBuff, 1, SYS_FOREVER_US);
+        LOG_INF("Data received from UART rx port: %d",uartRxBuff[0]);
         k_msleep(1000);
     }
     
