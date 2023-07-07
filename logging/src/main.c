@@ -73,8 +73,8 @@ int main(void)
 {
     while(1)
     {
-        printkFactorial();
-        // logFactorial();
+        // printkFactorial();
+        logFactorial();
         // LOG_INF("Hello world!!!");
         k_msleep(1000);
     }
