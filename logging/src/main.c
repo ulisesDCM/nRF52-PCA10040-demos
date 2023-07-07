@@ -73,9 +73,9 @@ int main(void)
 {
     while(1)
     {
-        // printkFactorial();
+        printkFactorial();
         // logFactorial();
-        LOG_INF("Hello world!!!");
+        // LOG_INF("Hello world!!!");
         k_msleep(1000);
     }
     return 0;
