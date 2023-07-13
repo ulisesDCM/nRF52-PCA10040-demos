@@ -1,0 +1,15 @@
+&spi1{
+    status = "disabled";
+};
+
+&spi0{
+    status = "disabled";
+};
+
+&i2c0 {  
+    mysensor: mysensor@4a{
+        compatible = "i2c-device";
+        status = "okay";
+        reg = < 0x4a >;
+    };
+};
