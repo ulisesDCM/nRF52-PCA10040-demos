@@ -9,26 +9,47 @@
 
 /* Thread basic configuration */
 #define STACK_SIZE			(1024*1)
-#define THREAD0_PRIORITY	(6)
-#define THREAD1_PRIORIY		(6)
+#define THREAD0_PRIORITY	(2)
+#define THREAD1_PRIORIY		(3)
+#define WORKQ_PRIORITY		(4)
 
 LOG_MODULE_REGISTER(main, LOG_LEVEL_DBG);
 
 /* Thread functions */
 void thread0(void){
+	uint64_t time_stamp;
+	int64_t delta_time;
+	int64_t counter=0;
 	while(1){
-		LOG_INF("Hello, I am thread0 :)");
-		k_msleep(5);
+		time_stamp=k_uptime_get();
+		/* Emulate work */
+		for(uint32_t i=0;i<400000;i++){
+			counter+=counter;
+		}
+		delta_time=k_uptime_delta(&time_stamp);
+
+		LOG_INF("Thread0 yielding this round in %lld ms",delta_time);
+		k_msleep(20);
+		// k_busy_wait(1000000);
 		// k_yield();
 	}
 }
 
 void thread1(void){
-	k_msleep(10);
+	int64_t time_stamp;
+	int64_t counter=0;
+	int64_t delta_time;
 	while(1){
-		LOG_INF("Hello, I am thread1 ;)");
+		time_stamp=k_uptime_get();
+		/* Emulate work */
+		for(uint32_t i=0;i<400000;i++){
+			counter+=counter;
+		}
+		delta_time = k_uptime_delta(&time_stamp);
+		LOG_INF("Thread1 yielding this round in %lld ms",delta_time);
+		k_msleep(20);
+		// k_busy_wait(1000000);
 		// k_yield();
-		k_msleep(5);
 	}
 }
 
