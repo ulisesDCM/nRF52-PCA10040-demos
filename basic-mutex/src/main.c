@@ -30,13 +30,15 @@ void shared_code_section(void){
 		decrement_count=COMBINED_TOTAL;
 	}
 
+	k_mutex_unlock(&test_mutex);
+
 	if(increment_count+decrement_count != COMBINED_TOTAL){
 		LOG_INF("Race condition happend!!!");
 		LOG_INF("increment_count(%d) + decrement_count(%d) = %d",increment_count,
 																decrement_count,
 															(increment_count+decrement_count));
+		k_msleep(400+sys_rand32_get()%10);
 	}
-	k_msleep(400+sys_rand32_get()%10);
 }
 
 void thread0(void){
@@ -53,8 +55,8 @@ void thread1(void){
 	}
 }
 
-K_THREAD_DEFINE(thread_0, 1024*2, thread0, NULL, NULL, NULL, THREAD0_PRIORITY, 0, 0);
-K_THREAD_DEFINE(thread_1, 1024*2, thread1, NULL, NULL, NULL, THREAD1_PRIORITY, 0, 0);
+K_THREAD_DEFINE(thread_0, 1024*2, thread0, NULL, NULL, NULL, THREAD0_PRIORITY, 0, 5000);
+K_THREAD_DEFINE(thread_1, 1024*2, thread1, NULL, NULL, NULL, THREAD1_PRIORITY, 0, 5000);
 
 void main(void)
 {
