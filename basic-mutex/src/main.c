@@ -5,8 +5,11 @@
  */
 
 #include <zephyr/kernel.h>
+#include <zephyr/logging/log.h>
+
+LOG_MODULE_REGISTER(main,LOG_LEVEL_DBG);
 
 void main(void)
 {
-	printk("Hello World! %s\n", CONFIG_BOARD);
+	LOG_INF("Hello world!!! %s",CONFIG_BOARD);
 }
