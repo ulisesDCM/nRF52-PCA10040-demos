@@ -10,22 +10,26 @@
 #include <zephyr/kernel.h>
 
 
-#define PRODUCER_PRIORITY			(4)
-#define CONSUMER_PRIORITY			(5)
+#define PRODUCER_PRIORITY			(5)
+#define CONSUMER_PRIORITY			(4)
 #define PRODUCER_STACK_SIZE			(1024*2)
 #define CONSUMER_STACK_SIZE			(1024*2)
 
 LOG_MODULE_REGISTER(main,LOG_LEVEL_DBG);
+
+K_SEM_DEFINE(instance_monitor,10,10);
 
 volatile uint32_t available_instance_count=10;
 
 void release_access(void){
 	available_instance_count++;
 	LOG_INF("Resource given and available_instance_count = %d",available_instance_count);
+	k_sem_give(&instance_monitor);
 
 }
 
 void get_access(void){
+	k_sem_take(&instance_monitor, K_FOREVER);
 	available_instance_count--;
 	LOG_INF("Resource taken and available_instance_count = %d",available_instance_count);
 }
