@@ -7,6 +7,9 @@
 #include <zephyr/kernel.h>
 #include <zephyr/logging/log.h>
 
+#include <zephyr/bluetooth/bluetooth.h>
+#include <zephyr/bluetooth/gap.h>
+
 #include "dk_buttons_and_leds.h"
 
 LOG_MODULE_REGISTER(main, LOG_LEVEL_DBG);
@@ -18,6 +21,13 @@ void main(void)
 
 	if(err){
 		LOG_ERR("Led init error: %d",err);
+		return;
+	}
+
+	/* BLE init */
+	err=bt_enable(NULL)
+	if(err){
+		LOG_ERR("BT enable error:%d",err);
 		return;
 	}
 
