@@ -56,12 +56,12 @@ void main(void)
 	}
 
 	/* BLE advertising init */
-	err=bt_le_adv_start(BT_LE_ADV_CONN, ad, ARRAY_SIZE(ad), sd, ARRAY_SIZE(sd));
+	err=bt_le_adv_start(BT_LE_ADV_NCONN, ad, ARRAY_SIZE(ad), sd, ARRAY_SIZE(sd));
 	if(err){
 		LOG_ERR("BT Adv error:%d",err);
 		return;
 	}
-	
+
 	while(1){
 		LOG_INF("Hello World! %s\n", CONFIG_BOARD);
 		dk_set_led(DK_LED1, (++led_state)%2);
