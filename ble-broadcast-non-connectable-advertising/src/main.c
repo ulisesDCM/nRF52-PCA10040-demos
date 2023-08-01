@@ -6,11 +6,10 @@
 
 #include <zephyr/kernel.h>
 #include <zephyr/logging/log.h>
+#include <dk_buttons_and_leds.h>
 
 #include <zephyr/bluetooth/bluetooth.h>
 #include <zephyr/bluetooth/gap.h>
-
-#include <dk_buttons_and_leds.h>
 
 #define DEVICE_NAME					(CONFIG_BT_DEVICE_NAME)
 #define DEVICE_NAME_LEN				(sizeof(DEVICE_NAME)-1)
@@ -21,15 +20,21 @@
 
 LOG_MODULE_REGISTER(main, LOG_LEVEL_DBG);
 
-// static const struct  bt_data_ad[]={
-// 	BT_DATA_BYTES(BT_DATA_FLAGS, BT_LE_AD_NO_BREDR),
-// };
+/* the advertising packet to send out.  */
+static const struct  bt_data ad[]={
+	BT_DATA_BYTES(BT_DATA_FLAGS, BT_LE_AD_NO_BREDR),
+	BT_DATA(BT_DATA_NAME_COMPLETE, DEVICE_NAME, DEVICE_NAME_LEN),
+};
+
+static const struct bt_data sd[]={
+	
+};
 
 void main(void)
 {
+	
 	int blink_status=0;
 	int err;
-	
 	err=dk_leds_init();
 	if(err){
 		LOG_ERR("LEDs init failed (err %d)",err);
