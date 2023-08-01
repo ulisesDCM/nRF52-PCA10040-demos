@@ -64,10 +64,6 @@ void main(void)
 		return;
 	}
 
-	
-
-
-
 	LOG_INF("Advertising succesfully started");
 	while(1){
 		dk_set_led(RUN_STATUS_LED, (++blink_status)%2);
