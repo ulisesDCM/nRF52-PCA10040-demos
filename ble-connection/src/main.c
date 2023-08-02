@@ -7,6 +7,7 @@
 #include <zephyr/bluetooth/uuid.h>
 #include <zephyr/bluetooth/addr.h>
 #include <zephyr/bluetooth/conn.h>
+#include <bluetooth/services/lbs.h>
 
 LOG_MODULE_REGISTER(main, LOG_LEVEL_DBG);
 
@@ -67,8 +68,14 @@ struct bt_conn_cb connection_callbacks = {
 };
 
 void button_handler(uint32_t button_state, uint32_t has_changed){
-	if( (button_state & USR_BUTTON) && (has_changed & USR_BUTTON)){
+	int err=0;
+	if(has_changed & USR_BUTTON){
 		/* USR_BUTTON was pressed */
+		LOG_INF("Button changed");
+		err=bt_lbs_send_button_state(button_state ? true : false);
+		if(err){
+			LOG_ERR("Couldn't send notification. err:%d",err);
+		}
 	}
 }
 
