@@ -6,14 +6,16 @@
 #include <zephyr/bluetooth/gatt.h>
 #include <zephyr/bluetooth/uuid.h>
 #include <zephyr/bluetooth/addr.h>
+#include <zephyr/bluetooth/conn.h>
 
 LOG_MODULE_REGISTER(main, LOG_LEVEL_DBG);
 
-#define LED_STATUS				(DK_LED1)
-#define LED_STATUS_TIME			(1000)
-#define USR_BUTTON				(DK_BTN1_MSK)
-#define BT_DEVICE_NAME			(CONFIG_BT_DEVICE_NAME)
-#define BT_DEVICE_NAME_LEN		(sizeof(BT_DEVICE_NAME)-1)
+#define LED_STATUS					(DK_LED1)
+#define LED_CONNECTION_STATUS		(DK_LED2)
+#define LED_STATUS_TIME				(1000)
+#define USR_BUTTON					(DK_BTN1_MSK)
+#define BT_DEVICE_NAME				(CONFIG_BT_DEVICE_NAME)
+#define BT_DEVICE_NAME_LEN			(sizeof(BT_DEVICE_NAME)-1)
 
 
 struct bt_conn *my_conn=NULL;
@@ -36,6 +38,32 @@ static const struct bt_data sd[] = {
 															0x785feabcd123
 															)),
 
+};
+
+void on_connected(struct bt_conn *conn, uint8_t err){
+	if(err){
+		LOG_ERR("Connection error: %d",err);
+		return;
+	}
+	LOG_INF("Connected");
+	my_conn = bt_conn_ref(conn);
+
+	/* Turn on the connection status LED */
+	dk_set_led_on(LED_CONNECTION_STATUS);
+}
+
+void on_disconnected(struct bt_conn *conn, uint8_t reason){
+	/* The BT error codes are in the hci_err.h */
+	LOG_ERR("Diconnect. reason %d",reason);
+	bt_conn_unref(conn);
+
+	/* Turn off the connection status LED */
+	dk_set_led_off(LED_CONNECTION_STATUS);
+}
+
+struct bt_conn_cb connection_callbacks = {
+	.connected=on_connected,
+	.disconnected=on_disconnected
 };
 
 void button_handler(uint32_t button_state, uint32_t has_changed){
@@ -72,6 +100,9 @@ void main(void)
 		LOG_ERR("Failed to configure button, error:%d",err);
 		return;
 	}
+
+	/* Register the connect/disconnect callbacks */
+	bt_conn_cb_register(&connection_callbacks);
 
 	/* BLE init */
 	err=bt_enable(NULL);
