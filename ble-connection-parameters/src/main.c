@@ -61,8 +61,8 @@ static const struct bt_data sd[] = {
 
 void dbg_btn_callback(const struct device *port, struct gpio_callback *cb, gpio_port_pins_t pins){
 	int err=0;
-	LOG_INF("Debug button was pressed...");
-	err = bt_lbs_send_button_state(1);
+	LOG_INF("Button state is: %d",gpio_pin_get(port,dbg_button.pin));
+	err = bt_lbs_send_button_state(gpio_pin_get(port,dbg_button.pin));
 	if(err){
 		LOG_ERR("Couldn't send notification. err:%d",err);
 	}
@@ -180,7 +180,7 @@ static int init_button(void){
 		return err;
 	}
 	
-	err = gpio_pin_interrupt_configure_dt(&dbg_button, GPIO_INT_EDGE_FALLING);
+	err = gpio_pin_interrupt_configure_dt(&dbg_button, GPIO_INT_EDGE_BOTH);
 	gpio_init_callback(&dbg_btn_cb, dbg_btn_callback, BIT(dbg_button.pin));
 	err = gpio_add_callback(dbg_button.port, &dbg_btn_cb);
 	if(err){
