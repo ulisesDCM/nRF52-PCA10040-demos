@@ -6,7 +6,7 @@
 
 #include <zephyr/kernel.h>
 #include "ble_connection.h"
-
+#include "gpio_conf.h"
 
 void main(void)
 {
