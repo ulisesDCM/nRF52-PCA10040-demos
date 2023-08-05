@@ -68,6 +68,27 @@ void dbg_btn_callback(const struct device *port, struct gpio_callback *cb, gpio_
 	}
 }
 
+void on_le_phy_updated(struct bt_conn *conn, struct bt_conn_le_phy_info *param){
+	switch(param->tx_phy){
+		case BT_CONN_LE_TX_POWER_PHY_1M: LOG_INF("PHY Updated. New PHY: 1M"); break;
+		case BT_CONN_LE_TX_POWER_PHY_2M: LOG_INF("PHY Updated. New PHY: 2M"); break;
+		case BT_CONN_LE_TX_POWER_PHY_CODED_S8: LOG_INF("PHY Updated. New PHY: Long range"); break;
+	}
+}
+
+static void update_phy(struct bt_conn *conn){
+	int err;
+	const struct bt_conn_le_phy_param preferred_phy = {
+		.options=BT_CONN_LE_PHY_OPT_NONE,
+		.pref_rx_phy=BT_GAP_LE_PHY_2M,
+		.pref_tx_phy=BT_GAP_LE_PHY_2M
+	};
+	err=bt_conn_le_phy_update(conn, &preferred_phy);
+	if(err){
+		LOG_ERR("bt_conn_le_phy_update() returned %d",err);
+	}
+}
+
 void on_connected(struct bt_conn *conn, uint8_t err){
 	if(err){
 		LOG_ERR("Connection error %d",err);
@@ -76,6 +97,19 @@ void on_connected(struct bt_conn *conn, uint8_t err){
 	LOG_INF("Connected");
 	my_conn = bt_conn_ref(conn);
 	gpio_pin_set(ble_led.port, ble_led.pin, true);
+	
+	struct bt_conn_info info;
+	err=bt_conn_get_info(conn, &info);
+	if(err){
+		LOG_ERR("bt_conn_get_info() returned:%d",err);
+		return;
+	}
+
+	double connection_interval = info.le.interval*1.25;
+	uint16_t supervision_timeout = info.le.timeout*10;
+	LOG_INF("Connection parameters: interval %.2f ms, latency %d intervals, timeout %d ms",
+							connection_interval, info.le.latency, supervision_timeout);	
+	update_phy(my_conn);						
 }
 
 void on_disconnected(struct bt_conn *conn, uint8_t reason){
@@ -85,9 +119,21 @@ void on_disconnected(struct bt_conn *conn, uint8_t reason){
 }
 
 
+void on_le_param_updated(struct bt_conn *conn, uint16_t interval, uint16_t latency, 
+				uint16_t timeout){
+
+	double connection_interval = interval*1.25;
+	uint16_t supervision_timeout = timeout*10;
+	LOG_INF("Connection parameters updated: interval %.2f ms, latency %d intervals, timeout %d ms", 
+							connection_interval, latency, supervision_timeout);
+	
+}
+
 struct bt_conn_cb bt_connection_callbacks = {
 	.connected = on_connected,
-	.disconnected = on_disconnected
+	.disconnected = on_disconnected,
+	.le_param_updated = on_le_param_updated,
+	.le_phy_updated=on_le_phy_updated
 };
 
 void main(void)
