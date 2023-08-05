@@ -9,6 +9,11 @@
 #include <zephyr/drivers/gpio.h>
 #include <zephyr/bluetooth/bluetooth.h>
 #include <zephyr/bluetooth/gap.h>
+#include <zephyr/bluetooth/gatt.h>
+#include <zephyr/bluetooth/uuid.h>
+#include <zephyr/bluetooth/addr.h>
+#include <zephyr/bluetooth/conn.h>
+#include <bluetooth/services/lbs.h>
 
 /* LOG module register */
 LOG_MODULE_REGISTER(main, LOG_LEVEL_DBG);
@@ -74,7 +79,6 @@ static int init_button(void){
 void main(void)
 {
 	int err=0;
-	int status_led=0;
 
 	/* Init LEDs */
 	err=init_leds();
@@ -98,9 +102,9 @@ void main(void)
 		LOG_ERR("Failed to enable BLE, error %d",err);
 		return;
 	}
-	
-	/* Configure and start BLE advertising */
 
+	/* Configure and start BLE advertising */
+	int status_led=0;
 	while(1){
 		LOG_INF("Hello World! %s\n", CONFIG_BOARD);
 		gpio_pin_set(system_led.port, system_led.pin, (++status_led)%2);		
